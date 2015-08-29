@@ -288,6 +288,7 @@ sub run {
     my $ver = join ".", map {ord} split(//, $^V);
     my $term = Term::ReadLine->new("perl $ver");
     $term->addhistory($_) for map {chomp; $_} @history;
+    $term->ornaments( join ',' => qw/ md me /, undef, undef );
 
     print { $term->OUT } "Type '?' for help\n";
 
