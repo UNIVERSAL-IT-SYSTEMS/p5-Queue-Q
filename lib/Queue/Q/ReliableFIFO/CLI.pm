@@ -315,24 +315,24 @@ sub run {
                         $self->change_db(@args);
                     }
                     elsif ($cmd eq "rm") {
-                        printf "%d items removed\n", $self->rm(@args);
+                        printf { $term->OUT } "%d items removed\n", $self->rm(@args);
                     }
                     elsif ($cmd eq "mv") {
-                        printf "%d items moved\n", $self->mv(@args);
+                        printf { $term->OUT } "%d items moved\n", $self->mv(@args);
                     }
                     elsif ($cmd eq "cp") {
-                        printf "%d items copied\n", $self->cp(@args);
+                        printf { $term->OUT } "%d items copied\n", $self->cp(@args);
                     }
                     elsif ($cmd eq 'ls') {
-                        print join("\n", $self->ls(@args)), "\n";
+                        print { $term->OUT } join("\n", $self->ls(@args)), "\n";
                     }
                     elsif ($cmd eq 'who') {
-                        print join("\n", $self->who(@args)), "\n";
+                        print { $term->OUT } join("\n", $self->who(@args)), "\n";
                     }
                     elsif ($cmd eq 'cleanup') {
                         my $n = $self->cleanup(@args);
-                        printf "%d items affected\n", $n;
-                        print "Try again after <timeout> seconds\n" if ($n ==0);
+                        printf { $term->OUT } "%d items affected\n", $n;
+                        print { $term->OUT } "Try again after <timeout> seconds\n" if ($n ==0);
                     }
                     elsif ($cmd eq 'close') {
                         $self->close(), "\n";
@@ -341,21 +341,21 @@ sub run {
                         $quit->();
                     }
                     elsif ($cmd eq 'hist') {
-                        print "\t", join("\n\t", @history), "\n";
+                        print { $term->OUT } "\t", join("\n\t", @history), "\n";
                     }
                     elsif ($cmd eq '?') {
                         my $connected = defined $self->path ? 1 : 0;
-                        print "available commands at this level:\n\t",
+                        print { $term->OUT } "available commands at this level:\n\t",
                             join("\n\t", @{$help{$connected}}), "\n";
                     }
                     1;
                 }
                 or do {
-                    print $@;
+                    print { $term->OUT } $@;
                 }
             }
             else {
-                print "unknown command $cmd\n";
+                print { $term->OUT } "unknown command $cmd\n";
             }
         }
     }
