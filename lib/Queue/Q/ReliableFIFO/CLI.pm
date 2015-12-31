@@ -5,7 +5,7 @@ use Redis;
 use Term::ReadLine;
 use Data::Dumper;
 use JSON::XS;
-use File::Slurp;
+use File::Slurper;
 use Carp qw(croak);
 
 use Queue::Q::ReliableFIFO::Redis;
@@ -230,7 +230,7 @@ sub run {
     my $conf_file = "$ENV{HOME}/.reliablefifo";
     my %conf;
     if (!$params{ignore_config_file} and -f $conf_file) {
-        %conf = %{decode_json(read_file($conf_file))};
+        %conf = %{decode_json(read_text($conf_file))};
         $self->open(server => $conf{server},  port => $conf{port})
             if exists $conf{server} && exists $conf{port};
         push(@history, @{$conf{history}}) if exists $conf{history};

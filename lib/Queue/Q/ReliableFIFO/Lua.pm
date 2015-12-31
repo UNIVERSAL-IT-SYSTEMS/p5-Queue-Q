@@ -1,6 +1,6 @@
 package Queue::Q::ReliableFIFO::Lua;
 use Redis;
-use File::Slurp;
+use File::Slurper;
 use Digest::SHA1;
 use Carp qw(croak);
 use Class::XSAccessor {
@@ -24,7 +24,7 @@ sub register {
     if ($self->script_dir) {
         $name ||= '*';
         for my $file (glob("$self->{script_dir}/$name.lua")) {
-            my $script = read_file($file);
+            my $script = read_text($file);
             my $sha1 = Digest::SHA1::sha1_hex($script);
             my ($found) = @{$self->redis_conn->script_exists($sha1)};
             if (!$found) {
